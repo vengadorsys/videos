@@ -1,5 +1,6 @@
 node_modules/
 .venv/
 stills/
-mito-caverna-hook.mp4
+*.mp4
+!*-movil.mp4
 audio/_*
