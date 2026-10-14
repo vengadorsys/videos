@@ -11,17 +11,17 @@ bootVideo(async (V) => {
   const bust = (g, x, y, h, at, life = 5) => {
     const w = h * 582 / 700, m = mover(g, x, y, 1);
     image(m.g, 'busto.png', -w / 2, -h, w, h);
-    tl.fromTo(m, { s: 0.01 }, { s: 1, duration: S(0.45), ease: 'back.out(1.7)' }, S(at));
-    tl.fromTo(m, { r: -1.8 }, { r: 1.8, duration: S(1.3), ease: 'sine.inOut', yoyo: true, repeat: Math.max(1, Math.ceil(life / 1.3)), immediateRender: false }, S(at + 0.45));
-    tl.fromTo(m, { y: y }, { y: y - 9, duration: S(0.9), ease: 'sine.inOut', yoyo: true, repeat: Math.max(1, Math.ceil(life / 0.9)), immediateRender: false }, S(at + 0.45));
-    sfx('pop', at, { gain: 0.8 });
+    gsap.set(m.g, { opacity: 0 });
+    tl.to(m.g, { opacity: 1, duration: S(0.7) }, S(at));
+    tl.fromTo(m, { r: -1.2 }, { r: 1.2, duration: S(1.4), ease: 'sine.inOut', yoyo: true, repeat: Math.max(1, Math.ceil(life / 1.4)), immediateRender: false }, S(at));
+    tl.fromTo(m, { y: y }, { y: y - 5, duration: S(1.0), ease: 'sine.inOut', yoyo: true, repeat: Math.max(1, Math.ceil(life / 1.0)), immediateRender: false }, S(at));
     return m;
   };
   let t = 0;
 
   /* 1 · Pantalla negra, goteo, sombras en la pared */
   const s1 = newScene(BG.solid('#08080B')); show(s1, 0); setTool('chalk');
-  { const g = s1.g, a = 0.1;
+  { const g = s1.g, a = 0.1; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
     // pared tenue con sombras que se mueven
     const wall = el('rect', { x: 1060, y: 150, width: 720, height: 560, rx: 18, fill: '#15151B', stroke: '#2A2A33', 'stroke-width': 4, opacity: 0 }, g);
     tl.to(wall, { opacity: 1, duration: S(0.6) }, S(a + 0.3));
@@ -44,50 +44,50 @@ bootVideo(async (V) => {
       const rip = el('ellipse', { cx: 300, cy: 900, rx: 5, ry: 2, fill: 'none', stroke: '#8FB4D9', 'stroke-width': 4, opacity: 0 }, g);
       tl.fromTo(rip, { opacity: 1, attr: { rx: 5, ry: 2 } }, { opacity: 0, attr: { rx: 70, ry: 14 }, duration: S(0.7), immediateRender: false }, S(s0 + 0.9));
     }
-    write(T(g, 540, 330, '¿Y si todo lo que', { size: 120, color: CHALK }), a + 0.8, 0.8);
-    write(T(g, 540, 470, 'has visto en tu vida', { size: 120, color: CHALK }), a + 1.6, 0.8);
-    write(T(g, 540, 640, 'fuera solo una sombra?', { size: 130, color: CHALK_O }), a + 2.6, 1.2);
-    t = a + 5.4;
+    write(T(g, 540, 330, '¿Y si todo lo que', { size: 120, color: CHALK }), a + vo(0), 1.3);
+    write(T(g, 540, 470, 'has visto en tu vida', { size: 120, color: CHALK }), a + vo(1.3), 1.6);
+    write(T(g, 540, 640, 'fuera solo una sombra?', { size: 130, color: CHALK_O }), a + vo(3.3), 2.2);
+    t = 7.0;
   }
   const s2 = newScene('chalk', { filter: 'url(#chalk)' });
   t = TR.eraser(s1, s2, t);
 
   /* 2 · La realidad como proyección */
   setTool('chalk');
-  { const g = s2.g, a = t;
-    write(T(g, CX, 230, '¿Y si lo que llamas "realidad"', { size: 108, color: CHALK }), a + 0.2, 1.2);
-    write(T(g, CX, 380, 'fuera apenas una', { size: 108, color: CHALK }), a + 1.6, 0.8);
-    write(T(g, CX, 520, 'proyección en una pared', { size: 138, color: CHALK_O }), a + 2.3, 1.3);
-    draw(P(g, wobble(CX, 490, 640, 95, 1.1, 2), { color: CHALK, w: 7 }), a + 3.6, 0.8);
-    write(T(g, CX, 800, '...y nadie te lo hubiera dicho', { size: 90, color: CHALK_B }), a + 4.5, 1.3);
-    write(T(g, CX, 930, 'jamás', { size: 150, color: CHALK_O, rot: -4 }), a + 6.0, 0.6);
-    bust(g, 230, 1040, 340, a + 5.2, 3);
-    t = a + 8.0;
+  { const g = s2.g, a = t; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
+    write(T(g, CX, 230, '¿Y si lo que llamas "realidad"', { size: 108, color: CHALK }), a + vo(6.1), 2.0);
+    write(T(g, CX, 380, 'fuera apenas una', { size: 108, color: CHALK }), a + vo(8.6), 1.3);
+    write(T(g, CX, 520, 'proyección en una pared', { size: 138, color: CHALK_O }), a + vo(10.0), 2.2);
+    draw(P(g, wobble(CX, 490, 640, 95, 1.1, 2), { color: CHALK, w: 7 }), a + vo(11.9), 0.8);
+    write(T(g, CX, 800, '...y nadie te lo hubiera dicho', { size: 90, color: CHALK_B }), a + vo(12.6), 2.0);
+    write(T(g, CX, 930, 'jamás', { size: 150, color: CHALK_O, rot: -4 }), a + vo(14.5), 0.8);
+    bust(g, 230, 1050, 230, a + vo(13.5), 3.5);
+    t = 19.1;
   }
   const s3 = newScene('sepia');
   t = TR.slideUp(s2, s3, t);
 
   /* 3 · Hace más de 2300 años */
   setTool('quill');
-  { const g = s3.g, a = t;
-    write(T(g, 560, 220, 'Hace más de', { size: 110, color: SEPIA }), a + 0.1, 0.7);
-    write(T(g, 560, 400, '2 300 años', { size: 220, color: RED }), a + 0.7, 0.9);
-    draw(P(g, 'M200,440 C500,470 900,430 1160,455', { color: SEPIA, w: 8 }), a + 1.6, 0.4);
-    write(T(g, 560, 610, 'un filósofo griego', { size: 110, color: SEPIA }), a + 1.9, 0.9);
-    write(T(g, 560, 760, 'imaginó exactamente esto:', { size: 100, color: PAL.purple }), a + 2.8, 1.0);
+  { const g = s3.g, a = t; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
+    write(T(g, 560, 220, 'Hace más de', { size: 110, color: SEPIA }), a + vo(15.8), 0.9);
+    write(T(g, 560, 400, '2 300 años', { size: 220, color: RED }), a + vo(16.8), 1.4);
+    draw(P(g, 'M200,440 C500,470 900,430 1160,455', { color: SEPIA, w: 8 }), a + vo(18.0), 0.4);
+    write(T(g, 560, 610, 'un filósofo griego', { size: 110, color: SEPIA }), a + vo(18.5), 1.4);
+    write(T(g, 560, 760, 'imaginó exactamente esto:', { size: 100, color: PAL.purple }), a + vo(20.2), 2.6);
     // columna griega
     draw(P(g, 'M1450,260 L1790,260 L1790,320 L1450,320 Z', { color: SEPIA, w: 7, fill: H('sepia') }), a + 0.8, 0.3);
     [1490, 1560, 1630, 1700, 1750].forEach((x, i) => draw(P(g, `M${x},320 L${x},880`, { color: SEPIA, w: 12 }), a + 1.0 + i * 0.1, 0.3));
     draw(P(g, 'M1420,880 L1820,880 L1820,950 L1420,950 Z', { color: SEPIA, w: 7, fill: H('sepia') }), a + 1.6, 0.3);
-    bust(g, 140, 1070, 250, a + 3.3, 1.5);
-    t = a + 4.6;
+    bust(g, 150, 1070, 200, a + vo(21.0), 2.5);
+    t = 29.1;
   }
   const s4 = newScene(BG.solid('#2A2119'));
   t = TR.iris(s3, s4, t, { x: 1620, y: 600 });
 
   /* 4 · La cueva: encadenados, sombras, mundo entero */
   setTool('chalk');
-  { const g = s4.g, a = t;
+  { const g = s4.g, a = t; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
     // cueva
     el('path', { d: 'M40,1080 L40,380 Q80,150 420,110 Q960,40 1500,110 Q1850,170 1880,420 L1880,1080 Z', fill: '#3B2E22' }, g);
     draw(P(g, 'M40,1080 L40,380 Q80,150 420,110 Q960,40 1500,110 Q1850,170 1880,420 L1880,1080', { color: '#BFA27A', w: 9 }), a + 0.1, 1.0, { sound: false });
@@ -112,76 +112,76 @@ bootVideo(async (V) => {
      ['M1470,700 Q1470,610 1530,600 Q1560,550 1610,590 Q1670,590 1660,700 Z', 1],
      ['M1730,700 L1730,470 M1730,570 L1690,520 M1730,530 L1780,480', 2]].forEach(([d, k]) => {
       const p = el('path', { d, fill: '#2A2119', stroke: '#2A2119', 'stroke-width': 16, 'stroke-linecap': 'round', opacity: 0 }, g);
-      tl.to(p, { opacity: 0.9, duration: S(0.4) }, S(a + 4.0 + k * 0.4));
-      tl.to(p, { x: -25 - k * 10, duration: S(1.3), ease: 'sine.inOut', yoyo: true, repeat: 6 }, S(a + 4.0 + k * 0.4));
+      tl.to(p, { opacity: 0.9, duration: S(0.4) }, S(a + vo(27.9) + k * 0.4));
+      tl.to(p, { x: -25 - k * 10, duration: S(1.3), ease: 'sine.inOut', yoyo: true, repeat: 6 }, S(a + vo(27.9) + k * 0.4));
     });
-    sfx('swell', a + 4.0, { gain: 0.6 });
-    write(T(g, CX, 215, 'Encadenados desde niños', { size: 104, color: CHALK }), a + 0.6, 1.3);
-    write(T(g, 620, 430, 'convencidos de que las sombras', { size: 62, color: CHALK_B }), a + 7.2, 1.4);
-    write(T(g, 620, 560, 'eran el mundo entero', { size: 96, color: CHALK_O }), a + 10.2, 1.2);
-    t = a + 13.0;
+    sfx('swell', a + vo(27.9), { gain: 0.6 });
+    write(T(g, CX, 215, 'Encadenados desde niños', { size: 104, color: CHALK }), a + vo(25.2), 1.6);
+    write(T(g, 620, 430, 'convencidos de que las sombras', { size: 62, color: CHALK_B }), a + vo(30.2), 2.2);
+    write(T(g, 620, 560, 'eran el mundo entero', { size: 96, color: CHALK_O }), a + vo(32.5), 1.6);
+    t = 42.4;
   }
   const s5 = newScene('blue');
   t = TR.flash(s4, s5, t);
 
   /* 5 · Parece ciencia ficción */
   setTool(null);
-  { const g = s5.g, a = t;
-    pop(T(g, CX, 250, 'Parece ciencia ficción...', { size: 140, color: '#FFFFFF' }), a + 0.2);
-    pop(T(g, CX, 480, 'pero es una de las ideas', { size: 100, color: '#FFD27A', cls: 'kalam' }), a + 1.5, { rot: -2 });
-    pop(T(g, CX, 640, 'MÁS INFLUYENTES', { size: 190, color: '#FFFFFF', stroke: INK }), a + 2.6, { sound: 'stamp' });
-    pop(T(g, CX, 810, 'de la historia del pensamiento', { size: 88, color: '#FFFFFF', cls: 'kalam' }), a + 4.0, { rot: 2 });
-    bust(g, 1730, 1060, 270, a + 1.0, 5.4);
-    t = a + 6.4;
+  { const g = s5.g, a = t; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
+    pop(T(g, CX, 250, 'Parece ciencia ficción...', { size: 140, color: '#FFFFFF' }), a + vo(34.4));
+    pop(T(g, CX, 480, 'pero es una de las ideas', { size: 100, color: '#FFD27A', cls: 'kalam' }), a + vo(36.3), { rot: -2 });
+    pop(T(g, CX, 640, 'MÁS INFLUYENTES', { size: 190, color: '#FFFFFF', stroke: INK }), a + vo(38.1), { sound: 'stamp' });
+    pop(T(g, CX, 810, 'de la historia del pensamiento', { size: 88, color: '#FFFFFF', cls: 'kalam' }), a + vo(39.4), { rot: 2 });
+    bust(g, 1740, 1060, 230, a + vo(35.5), 5.5);
+    t = 51.5;
   }
   const s6 = newScene('notebook');
   t = TR.flip(s5, s6, t);
 
   /* 6 · Hoy la vas a conocer completa */
   setTool('pencil');
-  { const g = s6.g, a = t;
-    write(T(g, CX + 30, 200, 'Hoy la vas a conocer', { size: 130, color: GRAPHITE }), a + 0.1, 1.0);
-    write(T(g, CX + 30, 360, 'completa', { size: 190, color: ORANGE }), a + 1.0, 0.8);
-    write(T(g, CX + 30, 500, 'paso a paso', { size: 120, color: GRAPHITE }), a + 2.0, 0.8);
-    draw(P(g, 'M500,540 C800,570 1200,520 1480,545', { color: BLUE, w: 8 }), a + 2.8, 0.4);
+  { const g = s6.g, a = t; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
+    write(T(g, CX + 30, 200, 'Hoy la vas a conocer', { size: 130, color: GRAPHITE }), a + vo(41.7), 1.4);
+    write(T(g, CX + 30, 360, 'completa', { size: 190, color: ORANGE }), a + vo(43.1), 0.9);
+    write(T(g, CX + 30, 500, 'paso a paso', { size: 120, color: GRAPHITE }), a + vo(43.9), 1.2);
+    draw(P(g, 'M500,540 C800,570 1200,520 1480,545', { color: BLUE, w: 8 }), a + vo(44.4), 0.4);
     ['1', '2', '3', '4'].forEach((n, i) => {
       const x = 420 + i * 340;
-      draw(P(g, wobble(x, 760, 70, 70, 1, 2), { color: BLUE, w: 7 }), a + 2.8 + i * 0.3, 0.3, { sound: false });
-      write(T(g, x, 790, n, { size: 90, color: BLUE }), a + 3.0 + i * 0.3, 0.2);
-      if (i < 3) draw(P(g, `M${x + 90},760 L${x + 250},760 M${x + 220},735 L${x + 250},760 L${x + 220},785`, { color: GRAPHITE, w: 6 }), a + 3.1 + i * 0.3, 0.2, { sound: false });
+      draw(P(g, wobble(x, 760, 70, 70, 1, 2), { color: BLUE, w: 7 }), a + vo(44.5) + i * 0.25, 0.3, { sound: false });
+      write(T(g, x, 790, n, { size: 90, color: BLUE }), a + vo(44.6) + i * 0.25, 0.2);
+      if (i < 3) draw(P(g, `M${x + 90},760 L${x + 250},760 M${x + 220},735 L${x + 250},760 L${x + 220},785`, { color: GRAPHITE, w: 6 }), a + vo(44.7) + i * 0.25, 0.2, { sound: false });
     });
-    t = a + 4.8;
+    t = 56.75;
   }
   const s7 = newScene('paper');
   t = TR.slideUp(s6, s7, t);
 
   /* 7 · Tu teléfono */
   setTool('marker');
-  { const g = s7.g, a = t;
-    write(T(g, 700, 190, 'Y al final, quizá mires', { size: 120 }), a + 0.1, 1.0);
-    write(T(g, 700, 340, 'tu teléfono', { size: 190, color: RED }), a + 1.4, 0.9);
-    write(T(g, 700, 480, 'de otra forma', { size: 120 }), a + 2.4, 0.8);
+  { const g = s7.g, a = t; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
+    write(T(g, 700, 190, 'Y al final, quizá mires', { size: 120 }), a + vo(45.9), 1.6);
+    write(T(g, 700, 340, 'tu teléfono', { size: 190, color: RED }), a + vo(48.0), 1.0);
+    write(T(g, 700, 480, 'de otra forma', { size: 120 }), a + vo(48.8), 1.0);
     // teléfono
-    draw(P(g, 'M1300,260 L1620,260 Q1650,260 1650,290 L1650,1000 Q1650,1030 1620,1030 L1300,1030 Q1270,1030 1270,1000 L1270,290 Q1270,260 1300,260 Z', { color: INK, w: 9, fill: H('gray') }), a + 2.6, 0.7);
-    draw(P(g, 'M1310,320 L1610,320 L1610,960 L1310,960 Z', { color: INK, w: 6, fill: H('blue') }), a + 3.2, 0.4, { sound: false });
+    draw(P(g, 'M1300,260 L1620,260 Q1650,260 1650,290 L1650,1000 Q1650,1030 1620,1030 L1300,1030 Q1270,1030 1270,1000 L1270,290 Q1270,260 1300,260 Z', { color: INK, w: 9, fill: H('gray') }), a + vo(48.2), 0.7);
+    draw(P(g, 'M1310,320 L1610,320 L1610,960 L1310,960 Z', { color: INK, w: 6, fill: H('blue') }), a + vo(48.9), 0.4, { sound: false });
     const sh = el('path', { d: 'M1460,700 L1460,610 Q1460,575 1490,575 Q1520,575 1520,610 L1520,700 Z M1490,555 m-24,0 a24,24 0 1,0 48,0 a24,24 0 1,0 -48,0', fill: INK, opacity: 0 }, g);
-    tl.to(sh, { opacity: 0.9, duration: S(0.4) }, S(a + 3.8));
-    tl.to(sh, { x: -40, duration: S(1.0), ease: 'sine.inOut', yoyo: true, repeat: 3 }, S(a + 3.8));
-    bust(g, 520, 1060, 360, a + 2.6, 2.4);
-    t = a + 4.8;
+    tl.to(sh, { opacity: 0.9, duration: S(0.4) }, S(a + vo(49.4)));
+    tl.to(sh, { x: -40, duration: S(1.0), ease: 'sine.inOut', yoyo: true, repeat: 3 }, S(a + vo(49.4)));
+    bust(g, 520, 1060, 240, a + vo(48.0), 3);
+    t = 62.25;
   }
   const s8 = newScene('chalk', { filter: 'url(#chalk)' });
   t = TR.iris(s7, s8, t, { x: 520, y: 700 });
 
   /* 8 · Pero antes: ¿quién la contó y por qué? */
   setTool('chalk');
-  { const g = s8.g, a = t;
-    write(T(g, CX, 250, 'Pero antes...', { size: 150, color: CHALK_B }), a + 0.1, 0.9);
-    write(T(g, CX, 480, 'tienes que saber', { size: 110, color: CHALK }), a + 1.2, 0.9);
-    write(T(g, 560, 700, '¿quién la contó', { size: 170, color: CHALK_O }), a + 3.4, 1.0);
-    write(T(g, 1280, 880, 'y por qué?', { size: 170, color: CHALK_O }), a + 4.5, 0.8);
-    bust(g, 1560, 1040, 400, a + 2.2, 4.6);
-    t = a + 6.6;
+  { const g = s8.g, a = t; const vo = w => Math.max(0.05, (w + 0.3) / 0.8 - a - 0.15);
+    write(T(g, CX, 250, 'Pero antes...', { size: 150, color: CHALK_B }), a + vo(50.3), 1.1);
+    write(T(g, CX, 480, 'tienes que saber', { size: 110, color: CHALK }), a + vo(51.8), 1.2);
+    write(T(g, 560, 700, '¿quién la contó', { size: 170, color: CHALK_O }), a + vo(53.4), 1.2);
+    write(T(g, 1280, 880, 'y por qué?', { size: 170, color: CHALK_O }), a + vo(55.0), 1.0);
+    bust(g, 1760, 1050, 220, a + vo(52.0), 4.5);
+    t = 71.6;
   }
   return t;
 }, { speed: 0.8, width: 1920, height: 1080 });
