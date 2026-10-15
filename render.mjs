@@ -23,7 +23,7 @@ const launch = process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PA
 const browser = await chromium.launch(launch);
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
 page.on('pageerror', e => console.error('PAGE ERROR', e.message));
-await page.goto(`http://localhost:${server.address().port}/index.html?render=1&mode=${mode}`);
+await page.goto(`http://localhost:${server.address().port}/${process.env.PAGE || 'index.html'}?render=1&mode=${mode}`);
 await page.waitForFunction(() => window.READY === true, null, { timeout: 60000 });
 const [vw, vh] = await page.evaluate(() => [window.VW, window.VH]);
 await page.setViewportSize({ width: vw, height: vh });
