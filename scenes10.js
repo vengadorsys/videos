@@ -95,16 +95,16 @@ bootVideo(async (V) => {
   let t = 0;
 
   /* 1 · Desciende, la luz se apaga, tropieza en la penumbra (cueva + gis) */
-  const s1 = newScene(BG.solid(DARK)); show(s1, 0); setTool('chalk');
+  const s1 = newScene(BG.solid('#4A3A2C')); show(s1, 0); setTool('chalk');
   { const g = s1.g, a = 0.1, vo = mkVo(a);
     const exit = el('ellipse', { cx: 1650, cy: 230, rx: 460, ry: 340, fill: '#FFF1B0', opacity: 0.85, filter: 'url(#soft)' }, g);
-    tl.to(exit, { opacity: 0, duration: S(10.0), ease: 'power1.in' }, S(a + 0.3));
+    tl.to(exit, { opacity: 0.15, duration: S(10.0), ease: 'power1.in' }, S(a + 0.3));
     const pts = [[1450, 200], [1090, 240], [1130, 330], [800, 400], [880, 510], [570, 590], [660, 700], [340, 800], [430, 910], [140, 1000]];
     let d = `M${pts[0][0]},${pts[0][1]}`; pts.slice(1).forEach(p => d += ` L${p[0]},${p[1]}`);
-    draw(P(g, d, { color: GOLD, w: 12 }), a + 0.2, 1.2, { sound: false });
-    [[1230, 280], [960, 440], [920, 340], [700, 640], [720, 540], [520, 840], [470, 740], [300, 960]].forEach(([x, y], i) => { const s = el('ellipse', { cx: x, cy: y, rx: 22, ry: 13, fill: '#9C968B' }, g); appear(s, a + 0.4 + i * 0.1, 0.2); });
-    const cm = mover(g, pts[0][0], pts[0][1], 0.62);
-    const cw = el('g', {}, cm.g); back(cw, 0, 0, 1.0, null, { fill: '#5C4630', stroke: '#E8D9B8' });
+    draw(P(g, d, { color: '#F1DDB0', w: 14 }), a + 0.2, 1.2, { sound: false });
+    [[1230, 280], [960, 440], [920, 340], [700, 640], [720, 540], [520, 840], [470, 740], [300, 960]].forEach(([x, y], i) => { const s = el('ellipse', { cx: x, cy: y, rx: 22, ry: 13, fill: '#CFC8BA' }, g); appear(s, a + 0.4 + i * 0.1, 0.2); });
+    const cm = mover(g, pts[0][0], pts[0][1], 0.9);
+    const cw = el('g', {}, cm.g); back(cw, 0, 0, 1.0, null, { fill: '#8A6A4A', stroke: '#FFF3D6' });
     tl.to(cm, { keyframes: pts.slice(1).map(p => ({ x: p[0], y: p[1], duration: S(1.1), ease: 'none' })) }, S(a + 0.5));
     // tropieza y titubea
     tl.to(cw, { rotation: 38, y: 30, duration: S(0.25), ease: 'power2.in' }, S(a + vo(7.4)));
@@ -112,7 +112,7 @@ bootVideo(async (V) => {
     tl.fromTo(cw, { rotation: -8 }, { rotation: 8, duration: S(0.3), yoyo: true, repeat: 5, ease: 'sine.inOut', immediateRender: false }, S(a + vo(8.8)));
     comic(g, 760, 640, '¡PUM!', a + vo(7.6), { color: RED, size: 110, rot: -8, life: 1.3, sound: 'thud' });
     const dk = el('rect', { x: -50, y: -50, width: 2020, height: 1180, fill: '#000000', opacity: 0 }, g);
-    tl.to(dk, { opacity: 0.55, duration: S(9.0) }, S(a + 0.5));
+    tl.to(dk, { opacity: 0.12, duration: S(9.0) }, S(a + 0.5));
     const u1 = T(g, 520, 120, 'Al regresar a la cueva,', { size: 92, color: CHALK }); write(u1, a + vo(0.0), 1.8);
     const u2 = T(g, 520, 225, 'sus ojos ya no ven', { size: 92, color: CHALK_B }); write(u2, a + vo(1.9), 1.3);
     const u3 = T(g, 520, 335, 'en la oscuridad', { size: 110, color: CHALK_O }); write(u3, a + vo(3.2), 1.6);
@@ -122,7 +122,7 @@ bootVideo(async (V) => {
     write(T(g, 1380, 950, 'parece torpe', { size: 120, color: RED }), a + vo(9.7), 1.5);
     t = 15.49;
   }
-  const s2 = newScene(BG.solid(DARK));
+  const s2 = newScene(BG.solid('#4A3A2C'));
   t = TR.eraser(s1, s2, t);
 
   /* 2 · Los demás se dan cuenta; empiezan las burlas (cueva + gis) */
@@ -130,9 +130,9 @@ bootVideo(async (V) => {
   { const g = s2.g, a = t, vo = mkVo(a);
     wallShadows(g, 760, 290, 800, 330, a + vo(11.7), 6.5, { seed: 5 });
     const glow = el('ellipse', { cx: CX, cy: 1120, rx: 700, ry: 280, fill: '#F2A33A', opacity: 0.4, filter: 'url(#soft)' }, g);
-    [980, 1160, 1340, 1520].forEach((x, i) => back(g, x, 1030, 0.75, a + 0.2 + i * 0.1, { fill: '#3A2D22', stroke: '#E8D9B8' }));
+    [980, 1160, 1340, 1520].forEach((x, i) => back(g, x, 1030, 0.75, a + 0.2 + i * 0.1, { fill: '#7A6450', stroke: '#FFF3D6' }));
     const rt = mover(g, 400, 1030, 0.85);
-    back(rt.g, 0, 0, 1.0, null, { fill: '#6A4A2E', stroke: '#F2A33A' });
+    back(rt.g, 0, 0, 1.0, null, { fill: '#9A6A3A', stroke: '#FFC76A' });
     tl.fromTo(rt, { r: -6 }, { r: 6, duration: S(0.5), yoyo: true, repeat: 8, ease: 'sine.inOut', immediateRender: false }, S(a + 0.2));
     const c1 = T(g, CX, 100, 'Y los demás prisioneros', { size: 96, color: CHALK }); write(c1, a + vo(11.7), 2.0);
     const c2 = T(g, CX, 205, 'se dan cuenta', { size: 110, color: CHALK_O }); write(c2, a + vo(13.6), 1.2);
@@ -198,8 +198,8 @@ bootVideo(async (V) => {
   setTool('chalk');
   { const g = s5.g, a = t, vo = mkVo(a);
     wallShadows(g, 100, 330, 760, 340, a + vo(41.0), 10.5, { seed: 6 });
-    back(g, 250, 1040, 0.8, a + 0.2, { fill: '#6A4A2E', stroke: '#F2A33A' });
-    [470, 650].forEach((x, i) => back(g, x, 1040, 0.8, a + 0.3 + i * 0.1, { fill: '#3A2D22', stroke: '#E8D9B8' }));
+    back(g, 250, 1040, 0.8, a + 0.2, { fill: '#9A6A3A', stroke: '#FFC76A' });
+    [470, 650].forEach((x, i) => back(g, x, 1040, 0.8, a + 0.3 + i * 0.1, { fill: '#7A6450', stroke: '#FFF3D6' }));
     // marcador
     draw(P(g, 'M1000,330 L1800,330 L1800,700 L1000,700 Z', { color: CHALK, w: 8 }), a + vo(44.4), 0.7, { sound: false });
     draw(P(g, 'M1400,330 L1400,700 M1000,430 L1800,430', { color: CHALK, w: 6 }), a + vo(44.9), 0.5, { sound: false });
